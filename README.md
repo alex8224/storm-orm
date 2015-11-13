@@ -29,3 +29,39 @@
         pass
     
 ```
+
+修改了PropertyPublisherMeta这个元类, 要求在 Model 使用 str 引用其他模型时，必须在模型中声明 __refybname__ = True ,在如下情况下可以使用, 目的是节省内存,  具体可以看 https://github.com/alex8224/storm-orm/blob/master/storm/properties.py#L334
+
+```python
+
+from storm.locals import Storm
+
+class ModelManager(object):
+    def __init__(self, model):
+        self._model = model
+
+    def all(self):
+        pass
+
+    def filter_by(self):
+        pass
+
+
+class BaseModel(Storm):
+   objects = ModelManger(self) 
+
+
+class User(BaseModel):
+    __storm_table__ = "user"
+    __refbyname__ = True
+    user_id = Int(primary=True)
+    username = Unicode()
+    age = Int()
+
+
+class UserDetail(BaseModel):
+    __storm_table__ = "user_detail"
+    __refbyname__ = True
+    user_id = Int(primary=True)
+    user = Reference(user_id, "User.id")
+
