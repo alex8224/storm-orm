@@ -36,20 +36,7 @@
 
 from storm.locals import Storm
 
-class ModelManager(object):
-    def __init__(self, model):
-        self._model = model
-
-    def all(self):
-        pass
-
-    def filter_by(self):
-        pass
-
-
-class BaseModel(Storm):
-   objects = ModelManger(self) 
-
+class BaseModel(Storm): pass
 
 class User(BaseModel):
     __storm_table__ = "user"
